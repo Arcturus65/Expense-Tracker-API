@@ -1,6 +1,8 @@
 package com.example.expensetrackerapi;
 
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -71,5 +73,26 @@ public class ExpenseService {
 
     public List<Expense> findByAmountGreaterThanEqual(double amount) {
         return expenseRepository.findByAmountGreaterThanEqual(amount);
+    }
+
+    public String budgetCompare() {
+        double amountSpent = 0;
+        double budgetDifference;
+        for (Expense expense : expenseRepository.findAll()) {
+            amountSpent += expense.getAmount();
+        }
+        if (amountSpent > budget) {
+            budgetDifference = amountSpent - budget;
+            return "You have an expense total of " +  amountSpent  + "lei. " + "You exceeded your budget by " +  budgetDifference;
+        } else {
+            budgetDifference = budget - amountSpent;
+            return "You have an expense total of " +  amountSpent  + "lei. " + "You remained within budget with " +  budgetDifference + " lei to spare.";
+        }
+    }
+
+    public List<Expense> expensesReport(int month, int year) {
+        LocalDate start = LocalDate.of(year, month, 1);
+        LocalDate end = LocalDate.of(year, month, start.lengthOfMonth());
+        return expenseRepository.findByDateBetween(start, end);
     }
 }

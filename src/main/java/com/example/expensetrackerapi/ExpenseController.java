@@ -40,4 +40,19 @@ public class ExpenseController {
         return returnPrompt;
     }
 
+    @PostMapping("/budget")
+    public String budgetSetting(@RequestParam double budget) {
+        expenseService.setBudget(budget);
+        return "Budget set succesfully.";
+    }
+    @GetMapping("/budget")
+    public String getBudget() {
+        String budgetPrompt = expenseService.budgetCompare();
+        return budgetPrompt;
+    }
+
+    @GetMapping("/expenses/report")
+    public List<Expense> report(@RequestParam int month, @RequestParam int year) {
+        return expenseService.expensesReport(month, year);
+    }
 }

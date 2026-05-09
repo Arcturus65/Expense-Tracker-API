@@ -8,4 +8,5 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     List<Expense> findByDate(LocalDate date);
     List<Expense> findByCategoryAndAmountGreaterThanEqual(Category category, double amount);
     List<Expense> findByAmountGreaterThanEqual(double amount);
+    List<Expense> findByDateBetween(LocalDate start, LocalDate end);
 }
